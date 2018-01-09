@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>Accounts List</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Heebo" rel="stylesheet">
+    <!-- scripts -->
+    <script src="../../../static/cws_scripts/myscript.js"></script>
+    
+ 
+     <!-- Include one of jTable styles. -->
+        <link href="/static/jquery-ui.css" rel="stylesheet" type="text/css" /> 
+        <link href="/static/editstyles.css" rel="stylesheet" type="text/css" /> 
+        <link href="/static/jtable/themes/metro/blue/jtable-test.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="/static/jquery.js"></script>
+        <script type="text/javascript" src="/static/jquery-ui.js"></script>
+    
+    
+    <link rel="stylesheet" href="/static/siteStyling/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/siteStyling/mainStyle.css">
+        
+        <!-- Include jTable script file. -->
+        <script src="/static/jtable/jquery.jtable.js" type="text/javascript"></script>
+    
+    
+ <script type="text/javascript">
+     
+    $(document).ready(function () {
+        $('#StationsContainer').jtable({
+            title: 'Weather Stations',
+            messages: { addNewRecord: "Add New Station", editRecord: "Edit Weather Station" },
+            actions: {
+                listAction: 'ListStations_Ajx',
+                createAction: 'CreateStation_Ajx',
+                updateAction: 'UpdateStation_Ajx',
+                deleteAction: 'DeleteStation_Ajx'
+            },
+            fields: {
+                stationname: {
+                    title: 'Weather Station Name',
+                    inputClass: 'accountinput',
+                    display: function (data) {
+                        return '<a href="../WeatherStations/' + data.record._id + '/RT_d/maindashboard.html">' + data.record.stationname + '</a>';
+                    }
+
+                },
+                _id: {
+                    key: true,
+                    title: "Station ID",
+                    create: true
+                },
+                stationpwd: {
+                    title: "Station Password",
+                    create: false,
+                    edit: false,
+                    display: function(data) {
+                        return data.record.stationpwd;
+                    }
+                }
+            }
+                
+            
+        });
+        $('#StationsContainer').jtable('load');
+    });
+    
+</script>
+ 
+</head>
+ 
+<body>
+    
+<div class="container">
+    <!-- Navigation -->
+<nav class="bgImage">
+    <a href="https://columbiaweather.com/"><img class="svglogo" src="../../../static/images/CWS_3.svg" alt="Columbia Weather Systems Logo"></a>
+
+    <div class="mob">
+    <div class="hamMenu">
+        <button onclick="changeElement1()" class="show" id="openButton"><img class="hamburger" src="../../../static/images/hamburger.svg" alt="hamburger icon"></button>
+        <button onclick="changeElement2()" class="hide" id="closeButton"><img class="close" src="../../../static/images/close.svg" alt="close icon"></button>
+    </div>
+
+        <ul class="fullMenu hide" id="fullMenu">
+            <li><a href="/">Home</a></li>
+            <li><a href="../admin/ManageStations">Manage Stations</a></li>
+            <li><a href="../admin/AccountSettings">Account Settings</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+    <div class="desk desknav">
+        <ul class="fullMenu" id="fullMenu">
+            <li class="active"><a href="/">Home</a></li>
+            <li class="current"><a href="../admin/ManageStations">Manage Stations</a></li>
+            <li><a href="../admin/AccountSettings">Account Settings</a></li>
+            {%- if user.isDifferentUser -%}
+            <li ><a href="../admin/EditCustomScreens">Custom Screens</a></li>
+            {%- endif -%}
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+    
+    
+<div class="row">
+    <div class="col-xs-12 col-sm-9">
+        <div class="h3 center" style="margin-top:10px; margin-left:18px;">
+            {{ account['accountname'] }}
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-3">
+        <div class="accountName">
+            {% if user.isDifferentUser %}
+            <h1 class="lead" style="margin-top:10px;">DifferentUser</h1>
+            {% endif %}
+        </div>
+    </div>
+</div>  
+
+ <div class="containerPadding">
+    </div>
+    
+        <div id="StationsContainer"></div>
+        <footer class="footer">
+        </footer>
+ 
+    </div>
+</body>
+ 
+</html>
